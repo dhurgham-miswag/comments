@@ -20,12 +20,15 @@ class Comments extends Component
 
     public $modelId;
 
+    public $canReply;
+
     protected $listeners = ['refreshComments' => '$refresh'];
 
     public function mount($modelType, $modelId)
     {
         $this->modelType = $modelType;
         $this->modelId = $modelId;
+        $this->canReply = config('comments.can_reply', true);
         $this->loadComments();
     }
 
@@ -37,7 +40,7 @@ class Comments extends Component
     public function addComment()
     {
         $this->validate([
-            'comment' => 'required|min:3',
+            'comment' => 'required|min:'.config('comments.validation.min_length'),
         ]);
 
         $commentService = app(CommentService::class);
@@ -55,14 +58,22 @@ class Comments extends Component
 
     public function startReply($commentId)
     {
+        if (! $this->canReply) {
+            return;
+        }
+
         $this->replyingTo = $commentId;
         $this->replyText = '';
     }
 
     public function addReply()
     {
+        if (! $this->canReply) {
+            return;
+        }
+
         $this->validate([
-            'replyText' => 'required|min:3',
+            'replyText' => 'required|min:'.config('comments.validation.min_length'),
         ]);
 
         $commentService = app(CommentService::class);

@@ -49,14 +49,16 @@
                         <p class="mt-1 text-gray-700">{{ $comment->comment }}</p>
                         
                         {{-- Reply Button --}}
-                        <div class="mt-2">
-                            <button
-                                wire:click="startReply({{ $comment->id }})"
-                                class="text-sm text-blue-600 hover:text-blue-800 focus:outline-none"
-                            >
-                                Reply
-                            </button>
-                        </div>
+                        @if($canReply)
+                            <div class="mt-2">
+                                <button
+                                    wire:click="startReply({{ $comment->id }})"
+                                    class="text-sm text-blue-600 hover:text-blue-800 focus:outline-none"
+                                >
+                                    Reply
+                                </button>
+                            </div>
+                        @endif
 
                         {{-- Reply Form --}}
                         @if($replyingTo === $comment->id)
