@@ -16,16 +16,22 @@ class Comments extends Component
 
     public $comments;
 
+    public $modelType;
+
+    public $modelId;
+
     protected $listeners = ['refreshComments' => '$refresh'];
 
-    public function mount()
+    public function mount($modelType, $modelId)
     {
+        $this->modelType = $modelType;
+        $this->modelId = $modelId;
         $this->loadComments();
     }
 
     public function loadComments()
     {
-        $this->comments = Comment::getRootCommentsWithReplies();
+        $this->comments = Comment::getRootCommentsWithReplies($this->modelType, $this->modelId);
     }
 
     public function addComment()
@@ -38,6 +44,8 @@ class Comments extends Component
         $commentService->create([
             'comment' => $this->comment,
             'user_id' => auth()->id(),
+            'commentable_type' => $this->modelType,
+            'commentable_id' => $this->modelId,
         ]);
 
         $this->comment = '';
@@ -62,6 +70,8 @@ class Comments extends Component
             'comment' => $this->replyText,
             'user_id' => auth()->id(),
             'parent_id' => $this->replyingTo,
+            'commentable_type' => $this->modelType,
+            'commentable_id' => $this->modelId,
         ]);
 
         $this->replyingTo = null;

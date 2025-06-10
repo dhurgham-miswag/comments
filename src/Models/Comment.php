@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Comment extends Model
 {
@@ -13,6 +14,8 @@ class Comment extends Model
         'comment',
         'user_id',
         'parent_id',
+        'commentable_type',
+        'commentable_id',
     ];
 
     protected $with = ['user'];
@@ -49,6 +52,14 @@ class Comment extends Model
     }
 
     /**
+     * Get the model that owns the comment.
+     */
+    public function commentable(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    /**
      * Scope a query to only include root comments.
      */
     public function scopeRoot(Builder $query): Builder
@@ -73,6 +84,15 @@ class Comment extends Model
     }
 
     /**
+     * Scope a query to filter by model.
+     */
+    public function scopeForModel(Builder $query, string $modelType, int $modelId): Builder
+    {
+        return $query->where('commentable_type', $modelType)
+            ->where('commentable_id', $modelId);
+    }
+
+    /**
      * Check if the comment is a reply.
      */
     public function isReply(): bool
@@ -89,16 +109,12 @@ class Comment extends Model
     }
 
     /**
-     * Get all root comments with their replies.
+     * Get all root comments with their replies for a specific model.
      */
-    public static function getRootCommentsWithReplies()
+    public static function getRootCommentsWithReplies(string $modelType, int $modelId)
     {
-        dd(static::root()
-            ->with(['user', 'replies.user'])
-            ->latest()
-            ->get());
-
         return static::root()
+            ->forModel($modelType, $modelId)
             ->with(['user', 'replies.user'])
             ->latest()
             ->get();
