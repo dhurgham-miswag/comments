@@ -1,18 +1,20 @@
 {
-    "name": "herd/comments",
+    "name": "dhurgham-miswag/comments",
     "description": "A Laravel package for managing comments with Livewire integration",
     "type": "library",
     "license": "MIT",
     "keywords": [
         "laravel",
         "comments",
-        "livewire"
+        "livewire",
+        "comments-system",
+        "laravel-package"
     ],
-    "homepage": "https://github.com/herd/comments",
+    "homepage": "https://github.com/dhurgham-miswag/comments",
     "authors": [
         {
-            "name": "Herd",
-            "email": "info@herd.com"
+            "name": "Dhurgham Miswag",
+            "email": "dhurgham.miswag@gmail.com"
         }
     ],
     "require": {
@@ -22,16 +24,19 @@
     },
     "require-dev": {
         "orchestra/testbench": "^8.0",
-        "phpunit/phpunit": "^10.0"
+        "phpunit/phpunit": "^10.0",
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^7.0",
+        "spatie/laravel-ray": "^1.26"
     },
     "autoload": {
         "psr-4": {
-            "Herd\\Comments\\": "src/"
+            "DhurghamMiswag\\Comments\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Herd\\Comments\\Tests\\": "tests/"
+            "DhurghamMiswag\\Comments\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -43,15 +48,20 @@
         "format": "vendor/bin/pint"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Herd\\Comments\\CommentsServiceProvider"
+                "DhurghamMiswag\\Comments\\CommentsServiceProvider"
             ]
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "version": "1.0.0"
 }

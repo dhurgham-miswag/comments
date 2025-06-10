@@ -1,8 +1,8 @@
 <?php
 
-namespace Herd\Comments;
+namespace DhurghamMiswag\Comments;
 
-use Herd\Comments\Livewire\Comments;
+use DhurghamMiswag\Comments\Livewire\Comments;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
