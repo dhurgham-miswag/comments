@@ -1,18 +1,14 @@
 <?php
 
-namespace Herd\Comments\Livewire;
+namespace DhurghamMiswag\Comments\Livewire;
 
-use Herd\Comments\Models\Comment;
-use Herd\Comments\Services\CommentService;
+use DhurghamMiswag\Comments\Models\Comment;
+use DhurghamMiswag\Comments\Services\CommentService;
 use Livewire\Component;
 
 class Comments extends Component
 {
     public $comment = '';
-
-    public $editingComment = null;
-
-    public $editingText = '';
 
     public $replyingTo = null;
 
@@ -71,40 +67,7 @@ class Comments extends Component
         $this->replyingTo = null;
         $this->replyText = '';
         $this->loadComments();
-        $this->emit('replyAdded');
-    }
-
-    public function startEdit($commentId)
-    {
-        $comment = Comment::find($commentId);
-        $this->editingComment = $commentId;
-        $this->editingText = $comment->comment;
-    }
-
-    public function updateComment()
-    {
-        $this->validate([
-            'editingText' => 'required|min:3',
-        ]);
-
-        $commentService = app(CommentService::class);
-        $commentService->update($this->editingComment, [
-            'comment' => $this->editingText,
-        ]);
-
-        $this->editingComment = null;
-        $this->editingText = '';
-        $this->loadComments();
-        $this->emit('commentUpdated');
-    }
-
-    public function deleteComment($commentId)
-    {
-        $commentService = app(CommentService::class);
-        $commentService->delete($commentId);
-
-        $this->loadComments();
-        $this->dispatch('commentAdded');
+        $this->dispatch('replyAdded');
     }
 
     public function render()

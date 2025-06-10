@@ -1,6 +1,6 @@
 <?php
 
-namespace Herd\Comments\Models;
+namespace DhurghamMiswag\Comments\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
