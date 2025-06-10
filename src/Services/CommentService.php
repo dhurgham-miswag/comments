@@ -26,11 +26,11 @@ class CommentService
     }
 
     /**
-     * Get all root comments with their replies.
+     * Get all root comments with their replies for a specific model.
      */
-    public function getRootCommentsWithReplies()
+    public function getRootCommentsWithReplies(string $modelType, int $modelId)
     {
-        return Comment::getRootCommentsWithReplies();
+        return Comment::getRootCommentsWithReplies($modelType, $modelId);
     }
 
     /**
@@ -57,6 +57,17 @@ class CommentService
     {
         return Comment::where('user_id', $userId)
             ->with('replies')
+            ->latest()
+            ->get();
+    }
+
+    /**
+     * Get comments for a specific model.
+     */
+    public function getModelComments(string $modelType, int $modelId)
+    {
+        return Comment::forModel($modelType, $modelId)
+            ->with(['user', 'replies.user'])
             ->latest()
             ->get();
     }
