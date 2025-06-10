@@ -40,7 +40,7 @@ class Comments extends Component
     public function addComment()
     {
         $this->validate([
-            'comment' => 'required|min:' . config('comments.validation.min_length'),
+            'comment' => 'required|min:'.config('comments.validation.min_length'),
         ]);
 
         $commentService = app(CommentService::class);
@@ -58,7 +58,7 @@ class Comments extends Component
 
     public function startReply($commentId)
     {
-        if (!$this->canReply) {
+        if (! $this->canReply) {
             return;
         }
 
@@ -68,12 +68,12 @@ class Comments extends Component
 
     public function addReply()
     {
-        if (!$this->canReply) {
+        if (! $this->canReply) {
             return;
         }
 
         $this->validate([
-            'replyText' => 'required|min:' . config('comments.validation.min_length'),
+            'replyText' => 'required|min:'.config('comments.validation.min_length'),
         ]);
 
         $commentService = app(CommentService::class);
