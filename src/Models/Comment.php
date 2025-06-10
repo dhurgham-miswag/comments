@@ -32,7 +32,11 @@ class Comment extends Model
     {
         $userModel = config('auth.providers.users.model');
 
-        return $this->belongsTo($userModel);
+        return $this->belongsTo(
+            $userModel,
+            config('comments.user_model.f_key'),
+            config('comments.user_model.p_key')
+        );
     }
 
     /**
