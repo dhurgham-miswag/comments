@@ -89,7 +89,7 @@ class Comment extends Model
     public function scopeForModel(Builder $query, string $modelType, int $modelId): Builder
     {
         return $query->where('commentable_type', $modelType)
-                    ->where('commentable_id', $modelId);
+            ->where('commentable_id', $modelId);
     }
 
     /**
