@@ -36,4 +36,4 @@ return [
 
     // The view to use for the comments component
     'view' => 'comments::livewire.comments',
-]; 
+];

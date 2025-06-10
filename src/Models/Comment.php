@@ -2,10 +2,10 @@
 
 namespace Herd\Comments\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
 
 class Comment extends Model
 {
@@ -28,6 +28,7 @@ class Comment extends Model
     public function user(): BelongsTo
     {
         $userModel = config('auth.providers.users.model');
+
         return $this->belongsTo($userModel);
     }
 
@@ -76,7 +77,7 @@ class Comment extends Model
      */
     public function isReply(): bool
     {
-        return !is_null($this->parent_id);
+        return ! is_null($this->parent_id);
     }
 
     /**
@@ -96,6 +97,7 @@ class Comment extends Model
             ->with(['user', 'replies.user'])
             ->latest()
             ->get());
+
         return static::root()
             ->with(['user', 'replies.user'])
             ->latest()

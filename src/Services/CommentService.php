@@ -3,8 +3,8 @@
 namespace Herd\Comments\Services;
 
 use Herd\Comments\Models\Comment;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CommentService
 {
@@ -33,7 +33,7 @@ class CommentService
     {
         return DB::transaction(function () use ($commentId, $data) {
             $comment = Comment::findOrFail($commentId);
-            
+
             // Check authorization
             if ($comment->user_id !== Auth::id()) {
                 throw new \Exception('Unauthorized to update this comment');
@@ -58,7 +58,7 @@ class CommentService
     {
         return DB::transaction(function () use ($commentId) {
             $comment = Comment::findOrFail($commentId);
-            
+
             // Check authorization
             if ($comment->user_id !== Auth::id()) {
                 throw new \Exception('Unauthorized to delete this comment');
@@ -66,7 +66,7 @@ class CommentService
 
             // Delete all replies first
             $comment->replies()->delete();
-            
+
             // Delete the comment
             $deleted = $comment->delete();
 
@@ -115,4 +115,4 @@ class CommentService
             ->latest()
             ->get();
     }
-} 
+}

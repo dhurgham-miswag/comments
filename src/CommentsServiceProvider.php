@@ -2,9 +2,9 @@
 
 namespace Herd\Comments;
 
+use Herd\Comments\Livewire\Comments;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use Herd\Comments\Livewire\Comments;
 
 class CommentsServiceProvider extends ServiceProvider
 {
@@ -41,4 +41,4 @@ class CommentsServiceProvider extends ServiceProvider
         // Load views
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'comments');
     }
-} 
+}
