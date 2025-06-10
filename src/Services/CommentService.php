@@ -3,7 +3,6 @@
 namespace DhurghamMiswag\Comments\Services;
 
 use DhurghamMiswag\Comments\Models\Comment;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CommentService
@@ -25,7 +24,6 @@ class CommentService
             return $comment;
         });
     }
-
 
     /**
      * Get all root comments with their replies.
