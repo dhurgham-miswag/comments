@@ -10,84 +10,87 @@ class Comments extends Component
 {
     public $comment = '';
 
-    public $replyingTo = null;
+    public $replying_to = null;
 
-    public $replyText = '';
+    public $reply_text = '';
 
     public $comments;
 
-    public $modelType;
+    public $model_type;
 
-    public $modelId;
+    public $model_id;
 
-    public $canReply;
+    public $can_reply;
+
+    public $can_show_commentor_name;
 
     protected $listeners = ['refreshComments' => '$refresh'];
 
-    public function mount($modelType, $modelId)
+    public function mount($model_type, $model_id)
     {
-        $this->modelType = $modelType;
-        $this->modelId = $modelId;
-        $this->canReply = config('comments.can_reply', true);
-        $this->loadComments();
+        $this->model_type = $model_type;
+        $this->model_id = $model_id;
+        $this->can_reply = config('comments.can_reply', true);
+        $this->can_show_commentor_name = config('comments.can_show_commentor_name', true);
+        $this->load_comments();
     }
 
-    public function loadComments()
+    public function load_comments()
     {
-        $this->comments = Comment::getRootCommentsWithReplies($this->modelType, $this->modelId);
+        $this->comments = Comment::get_root_comments_with_replies($this->model_type, $this->model_id);
     }
 
-    public function addComment()
+    public function add_comment()
     {
         $this->validate([
             'comment' => 'required|min:'.config('comments.validation.min_length'),
         ]);
 
-        $commentService = app(CommentService::class);
-        $commentService->create([
+        $comment_service = app(CommentService::class);
+        $comment_service->create([
             'comment' => $this->comment,
             'user_id' => auth()->id(),
-            'commentable_type' => $this->modelType,
-            'commentable_id' => $this->modelId,
+            'commentable_type' => $this->model_type,
+            'commentable_id' => $this->model_id,
         ]);
 
         $this->comment = '';
-        $this->loadComments();
+        $this->load_comments();
         $this->dispatch('commentAdded');
     }
 
-    public function startReply($commentId)
+    public function start_reply($comment_id)
     {
-        if (! $this->canReply) {
+        if (! $this->can_reply) {
             return;
         }
 
-        $this->replyingTo = $commentId;
-        $this->replyText = '';
+        $this->replying_to = $comment_id;
+        $this->reply_text = '';
     }
 
-    public function addReply()
+    public function add_reply()
     {
-        if (! $this->canReply) {
+        if (! $this->can_reply) {
             return;
         }
 
         $this->validate([
-            'replyText' => 'required|min:'.config('comments.validation.min_length'),
+            'reply_text' => 'required|min:'.config('comments.validation.min_length'),
         ]);
 
-        $commentService = app(CommentService::class);
-        $commentService->create([
-            'comment' => $this->replyText,
+        $comment_service = app(CommentService::class);
+        $comment_service->create([
+            'comment' => $this->reply_text,
             'user_id' => auth()->id(),
-            'parent_id' => $this->replyingTo,
-            'commentable_type' => $this->modelType,
-            'commentable_id' => $this->modelId,
+            'parent_id' => $this->replying_to,
+            'commentable_type' => $this->model_type,
+            'commentable_id' => $this->model_id,
         ]);
 
-        $this->replyingTo = null;
-        $this->replyText = '';
-        $this->loadComments();
+        $this->replying_to = null;
+        $this->reply_text = '';
+        $this->load_comments();
         $this->dispatch('replyAdded');
     }
 

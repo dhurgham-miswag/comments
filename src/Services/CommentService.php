@@ -15,60 +15,10 @@ class CommentService
         return DB::transaction(function () use ($data) {
             $comment = Comment::create($data);
 
-            // You can add additional logic here, such as:
-            // - Notifications
-            // - Events
-            // - Activity logging
-            // - Cache updates
+            // ToDo: can add additional logic here
 
             return $comment;
         });
     }
 
-    /**
-     * Get all root comments with their replies for a specific model.
-     */
-    public function getRootCommentsWithReplies(string $modelType, int $modelId)
-    {
-        return Comment::getRootCommentsWithReplies($modelType, $modelId);
-    }
-
-    /**
-     * Get all replies for a comment.
-     */
-    public function getRepliesForComment(int $commentId)
-    {
-        return Comment::getRepliesForComment($commentId);
-    }
-
-    /**
-     * Get a single comment with its replies.
-     */
-    public function getCommentWithReplies(int $commentId)
-    {
-        return Comment::with('replies.user')
-            ->findOrFail($commentId);
-    }
-
-    /**
-     * Get comments for a specific user.
-     */
-    public function getUserComments(int $userId)
-    {
-        return Comment::where('user_id', $userId)
-            ->with('replies')
-            ->latest()
-            ->get();
-    }
-
-    /**
-     * Get comments for a specific model.
-     */
-    public function getModelComments(string $modelType, int $modelId)
-    {
-        return Comment::forModel($modelType, $modelId)
-            ->with(['user', 'replies.user'])
-            ->latest()
-            ->get();
-    }
 }

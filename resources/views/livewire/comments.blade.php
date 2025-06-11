@@ -1,7 +1,7 @@
 <div class="max-w-4xl mx-auto p-4">
     {{-- Add Comment Form --}}
     <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
-        <form wire:submit="addComment" class="space-y-4">
+        <form wire:submit="add_comment" class="space-y-4">
             <div>
                 <label for="comment" class="block text-sm font-medium text-gray-700 mb-2">Add a comment</label>
                 <textarea
@@ -39,9 +39,11 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center justify-between">
-                            <p class="text-sm font-medium text-gray-900">
-                                {{ $comment->user->name ?? 'Anonymous' }}
-                            </p>
+                            @if($can_show_commentor_name)
+                                <p class="text-sm font-medium text-gray-900">
+                                    {{ $comment->user->name ?? 'Anonymous' }}
+                                </p>
+                            @endif
                             <span class="text-sm text-gray-500">
                                 {{ $comment->created_at->diffForHumans() }}
                             </span>
@@ -49,10 +51,10 @@
                         <p class="mt-1 text-gray-700">{{ $comment->comment }}</p>
                         
                         {{-- Reply Button --}}
-                        @if($canReply)
+                        @if($can_reply)
                             <div class="mt-2">
                                 <button
-                                    wire:click="startReply({{ $comment->id }})"
+                                    wire:click="start_reply({{ $comment->id }})"
                                     class="text-sm text-blue-600 hover:text-blue-800 focus:outline-none"
                                 >
                                     Reply
@@ -61,22 +63,22 @@
                         @endif
 
                         {{-- Reply Form --}}
-                        @if($replyingTo === $comment->id)
+                        @if($replying_to === $comment->id)
                             <div class="mt-4">
-                                <form wire:submit="addReply" class="space-y-4">
+                                <form wire:submit="add_reply" class="space-y-4">
                                     <div>
                                         <textarea
-                                            wire:model="replyText"
+                                            wire:model="reply_text"
                                             rows="2"
                                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
                                             placeholder="Write your reply..."
                                         ></textarea>
-                                        @error('replyText') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                                        @error('reply_text') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="flex justify-end space-x-3">
                                         <button
                                             type="button"
-                                            wire:click="$set('replyingTo', null)"
+                                            wire:click="$set('replying_to', null)"
                                             class="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 focus:outline-none"
                                         >
                                             Cancel
@@ -107,9 +109,11 @@
                                             </div>
                                             <div class="flex-1 min-w-0">
                                                 <div class="flex items-center justify-between">
-                                                    <p class="text-sm font-medium text-gray-900">
-                                                        {{ $reply->user->name ?? 'Anonymous' }}
-                                                    </p>
+                                                    @if($can_show_commentor_name)
+                                                        <p class="text-sm font-medium text-gray-900">
+                                                            {{ $reply->user->name ?? 'Anonymous' }}
+                                                        </p>
+                                                    @endif
                                                     <span class="text-sm text-gray-500">
                                                         {{ $reply->created_at->diffForHumans() }}
                                                     </span>

@@ -30,13 +30,13 @@ class Comment extends Model
      */
     public function user(): BelongsTo
     {
-        $userModel = config('auth.providers.users.model');
+        $user_model = config('auth.providers.users.model');
+        $user_config = config('comments.user_model', [
+            'f_key' => 'user_id',
+            'p_key' => 'user_id',
+        ]);
 
-        return $this->belongsTo(
-            $userModel,
-            config('comments.user_model.f_key'),
-            config('comments.user_model.p_key')
-        );
+        return $this->belongsTo($user_model, $user_config['f_key'], $user_config['p_key']);
     }
 
     /**
@@ -64,74 +64,15 @@ class Comment extends Model
     }
 
     /**
-     * Scope a query to only include root comments.
-     */
-    public function scopeRoot(Builder $query): Builder
-    {
-        return $query->whereNull('parent_id');
-    }
-
-    /**
-     * Scope a query to only include replies.
-     */
-    public function scopeReplies(Builder $query): Builder
-    {
-        return $query->whereNotNull('parent_id');
-    }
-
-    /**
-     * Scope a query to include replies with their users.
-     */
-    public function scopeWithReplies(Builder $query): Builder
-    {
-        return $query->with(['replies.user']);
-    }
-
-    /**
-     * Scope a query to filter by model.
-     */
-    public function scopeForModel(Builder $query, string $modelType, int $modelId): Builder
-    {
-        return $query->where('commentable_type', $modelType)
-            ->where('commentable_id', $modelId);
-    }
-
-    /**
-     * Check if the comment is a reply.
-     */
-    public function isReply(): bool
-    {
-        return ! is_null($this->parent_id);
-    }
-
-    /**
-     * Check if the comment has replies.
-     */
-    public function hasReplies(): bool
-    {
-        return $this->replies()->exists();
-    }
-
-    /**
      * Get all root comments with their replies for a specific model.
      */
-    public static function getRootCommentsWithReplies(string $modelType, int $modelId)
+    public static function get_root_comments_with_replies(string $model_type, int $model_id)
     {
         return static::root()
-            ->forModel($modelType, $modelId)
+            ->for_model($model_type, $model_id)
             ->with(['user', 'replies.user'])
             ->latest()
             ->get();
     }
 
-    /**
-     * Get all replies for a comment.
-     */
-    public static function getRepliesForComment(int $commentId)
-    {
-        return static::where('parent_id', $commentId)
-            ->with('user')
-            ->latest()
-            ->get();
-    }
 }
