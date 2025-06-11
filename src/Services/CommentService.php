@@ -20,5 +20,4 @@ class CommentService
             return $comment;
         });
     }
-
 }
