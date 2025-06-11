@@ -63,6 +63,14 @@ class Comment extends Model
     }
 
     /**
+     * Scope a query to only include root comments.
+     */
+    public function scopeRoot(Builder $query): Builder
+    {
+        return $query->whereNull('parent_id');
+    }
+
+    /**
      * Get all root comments with their replies for a specific model.
      */
     public static function get_root_comments_with_replies(string $model_type, int $model_id)

@@ -56,7 +56,7 @@ class Comments extends Component
 
         $this->comment = '';
         $this->load_comments();
-        $this->dispatch('commentAdded');
+        $this->dispatch('refreshComments');
     }
 
     public function start_reply($comment_id)
@@ -91,7 +91,7 @@ class Comments extends Component
         $this->replying_to = null;
         $this->reply_text = '';
         $this->load_comments();
-        $this->dispatch('replyAdded');
+        $this->dispatch('refreshComments');
     }
 
     public function render()
