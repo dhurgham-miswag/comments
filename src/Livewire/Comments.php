@@ -37,7 +37,7 @@ class Comments extends Component
 
     public function load_comments()
     {
-        $this->comments = Comment::get_root_comments_with_replies($this->model_type, $this->model_id);
+        $this->comments = Comment::getRootCommentsWithReplies($this->model_type, $this->model_id);
     }
 
     public function add_comment()

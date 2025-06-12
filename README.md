@@ -14,6 +14,21 @@ A Laravel package for managing comments with Livewire integration. This package 
 - Support for HTML content in comments
 - Configurable comment display options
 
+## Package Updates
+
+This package is automatically updated on Packagist when new versions are pushed to GitHub. To ensure you always get the latest version:
+
+1. Add the package to your `composer.json`:
+```json
+{
+    "require": {
+        "dhurgham-miswag/comments": "^0.1"
+    }
+}
+```
+
+2. Run `composer update` to get the latest version.
+
 ## Installation
 
 You can install the package via composer:
