@@ -4,13 +4,13 @@
         <form wire:submit="add_comment" class="space-y-4">
             <div>
                 <label for="comment" class="block text-sm font-medium text-gray-700 mb-2">Add a comment</label>
-                <textarea
-                    wire:model="comment"
-                    id="comment"
-                    rows="3"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
-                    placeholder="Write your comment here..."
-                ></textarea>
+                <x-filament::input.wrapper>
+                    <x-filament::input.rich-editor
+                        wire:model="comment"
+                        id="comment"
+                        placeholder="Write your comment here..."
+                    />
+                </x-filament::input.wrapper>
                 @error('comment') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
             <div class="flex justify-end">
@@ -48,7 +48,7 @@
                                 {{ $comment->created_at->diffForHumans() }}
                             </span>
                         </div>
-                        <p class="mt-1 text-gray-700">{{ $comment->comment }}</p>
+                        <div class="mt-1 text-gray-700">{!! $comment->comment !!}</div>
                         
                         {{-- Reply Button --}}
                         @if($can_reply)
@@ -67,12 +67,13 @@
                             <div class="mt-4">
                                 <form wire:submit="add_reply" class="space-y-4">
                                     <div>
-                                        <textarea
-                                            wire:model="reply_text"
-                                            rows="2"
-                                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out"
-                                            placeholder="Write your reply..."
-                                        ></textarea>
+                                        <x-filament::input.wrapper>
+                                            <x-filament::input.rich-editor
+                                                wire:model="reply_text"
+                                                id="reply_text_{{ $comment->id }}"
+                                                placeholder="Write your reply..."
+                                            />
+                                        </x-filament::input.wrapper>
                                         @error('reply_text') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                                     </div>
                                     <div class="flex justify-end space-x-3">
@@ -118,7 +119,7 @@
                                                         {{ $reply->created_at->diffForHumans() }}
                                                     </span>
                                                 </div>
-                                                <p class="mt-1 text-gray-700">{{ $reply->comment }}</p>
+                                                <div class="mt-1 text-gray-700">{!! $reply->comment !!}</div>
                                             </div>
                                         </div>
                                     </div>

@@ -7,9 +7,12 @@ A Laravel package for managing comments with Livewire integration. This package 
 - Comment on any model using polymorphic relationships
 - Nested replies support
 - Livewire integration for real-time updates
+- Filament rich text editor integration for enhanced content editing
 - Customizable user model configuration
 - Easy to install and configure
-- Clean and modern UI
+- Clean and modern UI with Tailwind CSS
+- Support for HTML content in comments
+- Configurable comment display options
 
 ## Installation
 
@@ -45,6 +48,9 @@ return [
     // Whether to allow replies to comments
     'can_reply' => true,
 
+    // Whether to show commenter names
+    'can_show_commentor_name' => true,
+
     // User model configuration
     'user_model' => [
         'f_key' => 'user_id', // Foreign key in comments table
@@ -59,6 +65,13 @@ Optionally, you can publish the views using:
 php artisan vendor:publish --tag="comments-views"
 ```
 
+## Requirements
+
+- PHP 8.0 or higher
+- Laravel 8.0 or higher
+- Livewire 2.0 or higher
+- Filament 2.0 or higher (for rich text editor)
+
 ## Usage
 
 Add the comments component to your blade view:
@@ -66,6 +79,31 @@ Add the comments component to your blade view:
 ```php
 <livewire:comments :model-type="YourModel::class" :model-id="$model->id" />
 ```
+
+### Features
+
+#### Rich Text Editor
+The package uses Filament's rich text editor for both comments and replies, providing:
+- Text formatting (bold, italic, etc.)
+- Lists (ordered and unordered)
+- Links
+- Images
+- Code blocks
+- Tables
+
+#### Comment Display
+- Nested replies with indentation
+- User avatars with initials
+- Relative timestamps
+- HTML content support
+- Configurable commenter name display
+
+#### Configuration Options
+- Enable/disable replies
+- Show/hide commenter names
+- Customize user model relationships
+- Set minimum comment length
+- Customize validation rules
 
 ## Testing
 

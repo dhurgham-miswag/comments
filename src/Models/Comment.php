@@ -2,6 +2,7 @@
 
 namespace DhurghamMiswag\Comments\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,8 +18,6 @@ class Comment extends Model
         'commentable_id',
     ];
 
-    protected $with = ['user'];
-
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
@@ -30,12 +29,10 @@ class Comment extends Model
     public function user(): BelongsTo
     {
         $user_model = config('auth.providers.users.model');
-        $user_config = config('comments.user_model', [
-            'f_key' => 'user_id',
-            'p_key' => 'user_id',
-        ]);
+        $foreign_key = config('comments.user_model.f_key', 'user_id');
+        $primary_key = config('comments.user_model.p_key', 'id');
 
-        return $this->belongsTo($user_model, $user_config['f_key'], $user_config['p_key']);
+        return $this->belongsTo($user_model, $foreign_key, $primary_key);
     }
 
     /**
@@ -71,12 +68,21 @@ class Comment extends Model
     }
 
     /**
+     * Scope a query to filter comments for a specific model.
+     */
+    public function scopeForModel(Builder $query, string $model_type, int $model_id): Builder
+    {
+        return $query->where('commentable_type', $model_type)
+            ->where('commentable_id', $model_id);
+    }
+
+    /**
      * Get all root comments with their replies for a specific model.
      */
-    public static function get_root_comments_with_replies(string $model_type, int $model_id)
+    public static function getRootCommentsWithReplies(string $model_type, int $model_id)
     {
         return static::root()
-            ->for_model($model_type, $model_id)
+            ->forModel($model_type, $model_id)
             ->with(['user', 'replies.user'])
             ->latest()
             ->get();
