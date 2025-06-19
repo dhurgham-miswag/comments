@@ -2,6 +2,10 @@
 
 All notable changes to `:package_name` will be documented in this file.
 
+## v1.0 - 2025-06-19
+
+**Full Changelog**: https://github.com/dhurgham-miswag/comments/compare/v0.1.0...v1.0
+
 ## 0.1 - 2025-06-12
 
 ### What's Changed
