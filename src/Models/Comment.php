@@ -28,9 +28,9 @@ class Comment extends Model
      */
     public function user(): BelongsTo
     {
-        $user_model = config('auth.providers.users.model');
-        $foreign_key = config('comments.user_model.f_key', 'user_id');
-        $primary_key = config('comments.user_model.p_key', 'id');
+        $user_model = config('comments.user_model.model');
+        $foreign_key = config('comments.user_model.foreign_key', 'user_id');
+        $primary_key = config('comments.user_model.primary_key', 'id');
 
         return $this->belongsTo($user_model, $foreign_key, $primary_key);
     }
