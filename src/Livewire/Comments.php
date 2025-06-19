@@ -56,9 +56,9 @@ class Comments extends Component
 
             // Get searchable fields from config
             $searchable_fields = config('comments.user_model.searchable_fields', ['name']);
-            
+
             // Build the search query
-            $query->where(function($q) use ($searchable_fields, $search) {
+            $query->where(function ($q) use ($searchable_fields, $search) {
                 foreach ($searchable_fields as $index => $field) {
                     if ($index === 0) {
                         $q->where($field, 'like', "%{$search}%");
@@ -70,13 +70,14 @@ class Comments extends Component
 
             // Get select fields from config
             $select_fields = config('comments.user_model.select_fields', ['id', 'name']);
-            
+
             // Get the results
             $this->users = $query->limit(5)
                 ->get($select_fields)
-                ->map(function($user) {
+                ->map(function ($user) {
                     $display_name = $user->{config('comments.user_model.display_name', 'name')};
                     $primary_key = $user->{config('comments.user_model.primary_key', 'id')};
+
                     return [
                         'id' => $primary_key,
                         'name' => $display_name,
@@ -103,7 +104,7 @@ class Comments extends Component
     public function add_comment()
     {
         $this->validate([
-            'comment' => 'required|min:2'
+            'comment' => 'required|min:2',
         ]);
 
         $formatted_comment = $this->format_comment($this->comment);
@@ -138,7 +139,7 @@ class Comments extends Component
     public function add_reply()
     {
         $this->validate([
-            'reply_text' => 'required|min:2'
+            'reply_text' => 'required|min:2',
         ]);
 
         $formatted_reply = $this->format_comment($this->reply_text);

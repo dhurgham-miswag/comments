@@ -30,13 +30,13 @@ return [
         'searchable_fields' => [    // Fields to search when looking for users to mention
             'name',
             'username',
-            'email'
+            'email',
         ],
         'select_fields' => [        // Fields to select when fetching users
             'id',
             'name',
             'username',
-            'email'
+            'email',
         ],
         'avatar_field' => 'avatar', // Field for user avatar (if exists)
     ],
