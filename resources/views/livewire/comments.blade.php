@@ -1,3 +1,32 @@
+@php
+    $config = config('comments.old_comments');
+    $merged_comments = collect($comments);
+
+    if ($config['enabled'] ?? false) {
+        $old_comments = DB::table($config['table_name'])
+            ->where($config['model_id_column'], $model_id)
+            ->select([
+                $config['record_id'] . ' as id',
+                $config['comment_column'] . ' as comment',
+                $config['created_at_column'] . ' as created_at'
+            ])
+            ->get()
+            ->map(function($item) {
+                return (object)[
+                    'id' => $item->id,
+                    'comment' => $item->comment,
+                    'created_at' => \Carbon\Carbon::parse($item->created_at),
+                    'is_old_comment' => true
+                ];
+            });
+
+        $merged_comments = $merged_comments->concat($old_comments)
+            ->sortByDesc('created_at')
+            ->values();
+    }
+@endphp
+
+
 <div class="max-w-4xl mx-auto p-4">
     {{-- Add Comment Form --}}
     <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
@@ -16,11 +45,11 @@
 
     {{-- Comments List --}}
     <div class="space-y-6">
-        @forelse($comments as $comment)
+        @forelse($merged_comments as $comment)
             <div class="bg-white rounded-lg shadow-sm p-6">
                 {{-- Main Comment --}}
                 <div class="flex items-start space-x-4">
-                    @if($can_show_commentor_name)
+                    @if($can_show_commentor_name && empty($comment->is_old_comment))
                         <div class="flex-shrink-0">
                             <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
                                 <span class="text-gray-600 font-medium">
@@ -31,7 +60,7 @@
                     @endif
                     <div class="flex-1 min-w-0">
                         <div class="flex items-center justify-between">
-                            @if($can_show_commentor_name)
+                            @if($can_show_commentor_name && empty($comment->is_old_comment))
                                 <p class="text-sm font-medium text-gray-900">
                                     {{ $comment->user->{config('comments.user_model.display_name', 'name')} ?? 'Anonymous' }}
                                 </p>
@@ -42,8 +71,8 @@
                         </div>
                         <div class="mt-1 text-gray-700">{!! $comment->comment !!}</div>
 
-                        {{-- Reply Button --}}
-                        @if($can_reply)
+                        {{-- Reply Button - Only for new comments --}}
+                        @if($can_reply && empty($comment->is_old_comment))
                             <div class="mt-2">
                                 <button
                                     wire:click="start_reply({{ $comment->id }})"
@@ -54,8 +83,8 @@
                             </div>
                         @endif
 
-                        {{-- Reply Form --}}
-                        @if($replying_to === $comment->id)
+                        {{-- Reply Form - Only for new comments --}}
+                        @if($replying_to === $comment->id && empty($comment->is_old_comment))
                             <div class="mt-4">
                                 <form wire:submit.prevent="add_reply" class="space-y-4">
                                     {{ $this->getReplyForm() }}
@@ -78,8 +107,8 @@
                             </div>
                         @endif
 
-                        {{-- Replies --}}
-                        @if($comment->replies->count() > 0)
+                        {{-- Replies - Only for new comments --}}
+                        @if(empty($comment->is_old_comment) && $comment->replies->count() > 0)
                             <div class="mt-6 space-y-4">
                                 @foreach($comment->replies as $reply)
                                     <div class="pl-6 border-l-2 border-gray-200">

@@ -4,9 +4,9 @@ namespace DhurghamMiswag\Comments\Livewire;
 
 use DhurghamMiswag\Comments\Models\Comment;
 use DhurghamMiswag\Comments\Services\CommentService;
+use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use FilamentTiptapEditor\TiptapEditor;
 use Livewire\Component;
 
 class Comments extends Component implements HasForms
@@ -58,8 +58,8 @@ class Comments extends Component implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            TiptapEditor::make('comment')
-                ->tools(['bold', 'italic', 'link', 'mention'])
+            Forms\Components\RichEditor::make('comment')
+                ->toolbarButtons(['bold', 'italic', 'link', 'mention'])
                 ->required()
                 ->columnSpanFull(),
         ];
@@ -90,17 +90,6 @@ class Comments extends Component implements HasForms
         $this->reply_form = ['reply_text' => ''];
     }
 
-    protected function getReplyFormSchema(): array
-    {
-        return [
-            TiptapEditor::make('reply_text')
-                ->label('Write your reply')
-                ->tools(['bold', 'italic', 'link', 'mention'])
-                ->required()
-                ->columnSpanFull(),
-        ];
-    }
-
     public function add_reply()
     {
         $data = $this->getReplyForm()->getState();
@@ -121,7 +110,7 @@ class Comments extends Component implements HasForms
     public function getReplyForm()
     {
         return $this->makeForm()
-            ->schema($this->getReplyFormSchema())
+            ->schema($this->getFormSchema())
             ->statePath('reply_form');
     }
 

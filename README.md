@@ -71,6 +71,15 @@ return [
         'f_key' => 'user_id', // Foreign key in comments table
         'p_key' => 'user_id', // Primary key in users table
     ],
+
+    'old_comments' => [
+        'enabled' => true, // Enable old comments support
+        'connection' => 'mysql', // Database connection for old comments (optional)
+        'table_name' => 'old_comments', // Table name for old comments
+        'model_id_column' => 'model_id', // Column for model ID
+        'comment_column' => 'comment', // Column for comment text
+        'created_at_column' => 'created_at', // Column for creation date
+    ],
 ];
 ```
 
