@@ -2,6 +2,14 @@
 
 All notable changes to `:package_name` will be documented in this file.
 
+## v1.3 - 2025-06-24
+
+### What's Changed
+
+* add old comments feature by @dhurgham-miswag in https://github.com/dhurgham-miswag/comments/pull/9
+
+**Full Changelog**: https://github.com/dhurgham-miswag/comments/compare/v1.2...v1.3
+
 ## v1.2 - 2025-06-21
 
 ### What's Changed
