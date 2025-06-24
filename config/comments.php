@@ -26,7 +26,7 @@ return [
     'old_comments' => [
         'enabled' => false, // Enable or disable fetching old comments
         'table_name' => 'old_comments', // Name of the old comments table
-        'record_id' => 'id',// Column name for the incremental ID
+        'record_id' => 'id', // Column name for the incremental ID
         'model_id_column' => 'model_id', // Column name for the related model's ID
         'comment_column' => 'comment', // Column name for the comment text
         'created_at_column' => 'created_at', // Column name for the comment's creation date
@@ -36,5 +36,5 @@ return [
         'model' => config('auth.providers.users.model', \App\Models\User::class),
         'foreign_key' => 'user_id', // Foreign key in comments table
         'primary_key' => 'id',      // Primary key in users table
-        ]
+    ],
 ];

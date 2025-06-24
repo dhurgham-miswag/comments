@@ -4,10 +4,10 @@ namespace DhurghamMiswag\Comments\Livewire;
 
 use DhurghamMiswag\Comments\Models\Comment;
 use DhurghamMiswag\Comments\Services\CommentService;
-use Livewire\Component;
 use Filament\Forms;
-use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Livewire\Component;
 
 class Comments extends Component implements HasForms
 {
@@ -55,7 +55,6 @@ class Comments extends Component implements HasForms
         $this->comments = Comment::getRootCommentsWithReplies($this->model_type, $this->model_id);
     }
 
-
     protected function getFormSchema(): array
     {
         return [
@@ -88,7 +87,7 @@ class Comments extends Component implements HasForms
         }
 
         $this->replying_to = $comment_id;
-        $this->reply_form = [ 'reply_text' => '' ];
+        $this->reply_form = ['reply_text' => ''];
     }
 
     public function add_reply()
@@ -102,7 +101,7 @@ class Comments extends Component implements HasForms
             'commentable_type' => $this->model_type,
             'commentable_id' => $this->model_id,
         ]);
-        $this->reply_form = [ 'reply_text' => '' ];
+        $this->reply_form = ['reply_text' => ''];
         $this->replying_to = null;
         $this->load_comments();
         $this->dispatch('refreshComments');
