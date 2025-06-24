@@ -1,6 +1,6 @@
 {
     "name": "dhurgham-miswag/comments",
-    "description": "A Laravel package for managing comments with Livewire integration",
+    "description": "A Laravel package for managing comments with Livewire and filament integration",
     "type": "library",
     "license": "MIT",
     "keywords": [
