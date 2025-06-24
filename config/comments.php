@@ -36,5 +36,7 @@ return [
         'model' => config('auth.providers.users.model', \App\Models\User::class),
         'foreign_key' => 'user_id', // Foreign key in comments table
         'primary_key' => 'id',      // Primary key in users table
+        'primary_key' => 'user_id', // primary key in user model
+        'foreign_key' => 'user_id', // foreign key in comments table
     ],
 ];

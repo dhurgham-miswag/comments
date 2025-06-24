@@ -2,6 +2,14 @@
 
 All notable changes to `:package_name` will be documented in this file.
 
+## v1.2 - 2025-06-21
+
+### What's Changed
+
+* use tiptapeditor by @dhurgham-miswag in https://github.com/dhurgham-miswag/comments/pull/8
+
+**Full Changelog**: https://github.com/dhurgham-miswag/comments/compare/v1.1...v1.2
+
 ## v1.1 - 2025-06-19
 
 **Full Changelog**: https://github.com/dhurgham-miswag/comments/compare/1.0.0...v1.1
